@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style type="text/css">
+		#cont{
+			display: flex;
+			width: 100vw;
+			height: 100vh;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#res-cont
+		{
+			margin-top:20px;
+			height: 600px;
+			/* border: 1px solid red; */
+			width: 400px;
+			padding: 20px;
+        }
+
+		#form
+		{
+			padding :20px;
+			height: 300px;
+			/*border: 1px solid red;*/
+			width: 360px;
+		}
+	</style>
+</head>
+<body>
+	<div id="cont">
+		<div id="form">
+			<label for="title" >Title :</label>
+			<input type="text" name="title" id="title"/>
+			<br>
+			<br>
+			<label for="year">Year :</label>
+			<input type="text" name="year" id="year"/>
+			<br>
+			<br>
+			<button onclick="search()">Submit</button>
+		<div>
+
+		<div id="res-cont">
+			<div id="response"></div>
+		</div>
+	</div>
+
+	
+	
+
+	<script type="text/javascript">
+		let block=document.getElementById('response');
+		
+	
+	// console.log(title);
+	async function search(){
+
+		let title=document.getElementById('title').value;
+		let year=document.getElementById('year').value;
+		
+		if(title=="")
+		{
+			block.innerText="Please fill the Title";
+			console.log("Empty");
+		}
+
+		else
+		{
+			const api="http://www.omdbapi.com/?i=tt3896198&apikey=d59a336a";
+			let query=api+"&t="+title+"&y="+year;
+			console.log(query);
+			const res= await fetch(query)
+			const data= await res.json();
+			console.log(data);
+			console.log(data['Title']);
+
+			if(data.Response=="True")
+			{
+				block.innerHTML=
+				"<img src=\""+data['Poster']+"\" height=200px width=120px><br><br>"
+				+"<br>Title: "+ data['Title']+
+				"<br><br> Type: "+data['Type']+
+				"<br><br> Genre : "+data['Genre']+
+				"<br><br> Plot: "+data['Plot']+
+				"<br><br> Released: "+data['Released'];
+			}
+
+			else
+			{
+				block.innerText="Error: Cannot fetch Please Try again!";
+				console.log("error");
+			}
+			
+		}
+	}
+
+	</script>
+
+</body>
+</html>
